@@ -13,9 +13,50 @@ import java.util.Scanner;
 
 /**
 * Microwave program calculates cook time depending on item and number of item, with 2 items
-* increase time by 50%, for 3 increase by 100%
+* increase time by 50%, for 3 increase by 100%.
 */
-public class Microwave {
+final class Microwave {
+
+    /**
+    * Constant.
+    */
+    public static final double SUB = 60;
+    /**
+    * Constant.
+    */
+    public static final double PIZZA = 45;
+    /**
+    * Constant.
+    */
+    public static final double SOUP = 105;
+    /**
+    * Constant.
+    */
+    public static final int MIN = 60;
+    /**
+    * Constant.
+    */
+    public static final int ONE = 1;
+    /**
+    * Constant.
+    */
+    public static final int TWO = 2;
+    /**
+    * Constant.
+    */
+    public static final int THREE = 3;
+    /**
+    * Constant.
+    */
+    public static final double MULTIPLIER1 = 1.0;
+    /**
+    * Constant.
+    */
+    public static final double MULTIPLIER2 = 1.5;
+    /**
+    * Constant.
+    */
+    public static final double MULTIPLIER3 = 2;
 
     /**
     * Prevents instantiation.
@@ -37,65 +78,59 @@ public class Microwave {
 
     public static void main(final String[] args) {
 
-    try {
         final Scanner myObj = new Scanner(System.in);
-        System.out.println("Are you heating sub, pizza, or soup?: ");
-        String food = myObj.nextLine();
+        double foodTypeTime = 0.0;
+        double amountTime = 0.0;
 
-        if(food.toLowerCase().equals("sub")) {
-            double time = 60;
-            System.out.println("How many sub(s) are you cooking?(max:3): ");
-
-            // stores user input
-            int subs = myObj.nextInt();
-
-            if(subs == 2) {
-                time *= 1.5;
+        try {
+            System.out.println("Are you heating up a sub, soup, or pizza? ");
+            final String food = myObj.next();
+            if ("sub".equals(food)) {
+                foodTypeTime = SUB;
             }
-            else if(subs == 3) {
-                time *= 2;
+            else if ("pizza".equals(food)) {
+                foodTypeTime = PIZZA;
             }
-            System.out.println("The total cook time is " + time);
-
+            else if ("soup".equals(food)) {
+                foodTypeTime = SOUP;
+            }
+            else {
+                System.out.println("Not a valid food.");
+                System.exit(0);
+            }
         }
-        else if(food.toLowerCase().equals("pizza")) {
-            double time = 45;
-            System.out.println("How many pizza(s) are you cooking?(max:3): ");
-
-            // stores user input
-            int pizzas = myObj.nextInt();
-
-            if(pizzas == 2) {
-                time = 67.5;
-            }
-            else if(pizzas == 3) {
-                time = 90;
-            }
-            int minutes = (int) time / 60;
-            double seconds = (time%60);
-            System.out.println("The total cook time is " + minutes + " minutes and " + seconds + " seconds");
-
+        catch (java.util.InputMismatchException error) {
+            System.out.println("Invalid food type");
         }
 
-        else if(food.toLowerCase().equals("soup")) {
-            int time = 105;
-            System.out.println("How many soup(s) are you cooking?(max:3): ");
-
-            // stores user input
-            int soups = myObj.nextInt();
-
-            if(soups == 2) {
-                time *= 1.5;
+        try {
+            System.out.println("How many are you heating up?: ");
+            final int foodAmount = myObj.nextInt();
+            if (foodAmount == ONE) {
+                amountTime = MULTIPLIER1;
             }
-            else if(soups == 3) {
-                time *= 2;
+            else if (foodAmount == TWO) {
+                amountTime = MULTIPLIER2;
             }
-            System.out.println("The total cook time is " + time);
+            else if (foodAmount == THREE) {
+                amountTime = MULTIPLIER3;
+            }
+            else {
+                System.out.println("Invalid number of food.");
+                System.exit(0);
+            }
+
+            final double time = foodTypeTime * amountTime;
+            final double minutesDouble = time / MIN;
+            final int minutes = (int) minutesDouble;
+            final double seconds = time % MIN;
+            // Output
+            System.out.println("The total heat up time is " + minutes
+                + " minutes and " + seconds + " seconds");
+            System.out.println("\nDone.");
         }
-        catch (java.util.InputMismatchException errorCode) {
-            System.out.println("The maximum quantity of food is 3.");
-            }
-            System.out.println("\nDone");
+        catch (java.util.InputMismatchException error) {
+            System.out.println("That was not a number.");
         }
     }
 }
